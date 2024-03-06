@@ -20,7 +20,8 @@ export default {
 }
 
 .logo{
-    max-width:200px;
+    max-width:400px;
     height: auto;
+    padding:20px;
 }
 </style>
