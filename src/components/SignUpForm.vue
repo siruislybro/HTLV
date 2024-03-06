@@ -1,14 +1,15 @@
 <template>
-    <div class="login-form">
-      <h2>Sign in to your HTLV account.</h2>
+    <div class="signup-form">
+      <h2>Create an account with HTLV!</h2>
       <div class = "account-message">
-        Don't have an account? <a href="/signup">Sign up</a>
+        Already have an account? <a href="/login">Login</a>
       </div>
-      <form @submit.prevent="login">
-        <input v-model="email" type="text" placeholder="Email" required />
+      <form @submit.prevent="createAccount">
+        <input v-model="username" type="text" placeholder="Username" required />
+        <input v-model="email" type = "email" placeholder = "email@example.com" required/>
         <input v-model="password" type="password" placeholder="Password" required />
-        <a href="/forgot-password" class="forgot-password">Forgot your password?</a>
-        <button type="submit" class="sign-in-button">Sign In</button>
+        <input v-model="retypePassword" type = "password" placeholder="Retype Password" required/>
+        <button type="submit" class="create-account-button">Create Account</button>
       </form>
       <button @click="signInWithGoogle" class="google-sign-in-button">Continue with Google</button>
       <div class="additional-links">
@@ -19,29 +20,36 @@
 </template>
   
 <script>
-import {getAuth, signInWithEmailAndPassword, GoogleAuthProvider, signInWithPopup} from "firebase/auth"
+import {getAuth, createUserWithEmailAndPassword, GoogleAuthProvider, signInWithPopup} from "firebase/auth"
 export default {
-    name: 'LoginForm',
+    name: 'SignUpForm',
     data() {
         return {
+        username: '',
         email: '',
         password: '',
-        loginError:'',
+        retypePassword: '',
+        createAccountError:'',
         };
     },
     methods: {
-        async login() {
-            if (!this.email || !this.password) {
-                this.loginError = 'Email and password are required.';
+        async createAccount() {
+            if (!this.username || !this.email || !this.password || !this.retypePassword) {
+                this.createAccountError = 'All fields are required.';
+                return;
+            }
+
+            if (this.password !== this.retypePassword) {
+                this.createAccountError = 'Passwords do not match.'
                 return;
             }
 
             const auth = getAuth();
             try {
-                await signInWithEmailAndPassword(auth, this.email, this.password);
-                console.log("Logged in successfully");
+                const userCredentials = await createUserWithEmailAndPassword(auth, this.email, this.password);
+                console.log("Account created successfully", userCredentials.user);
             } catch (error) {
-                this.loginError = error;
+                this.createAccountError = error;
                 console.error("Login Error:", error );
             }
         },
@@ -63,7 +71,7 @@ export default {
 </script>
   
 <style scoped>
-    .login-form {
+    .signup-form {
     width: 400px;
     margin: 0 auto;
     text-align: center;
@@ -72,6 +80,7 @@ export default {
     h2 {
     margin-bottom: 1.5rem;
     font-size: 24px;
+    text-align: left;
     }
 
     .account-message {
@@ -100,7 +109,7 @@ export default {
     text-decoration: none;
     }
 
-    .sign-in-button {
+    .create-account-button {
     width: 100%;
     padding: 0.5rem;
     background-color: #ff5b5b;
