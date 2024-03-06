@@ -1,6 +1,9 @@
 <template>
   <div class = "signup-view">
-    <Header />
+    <div class = "left-container">
+      <BackToHome />
+      <Logo />
+    </div>
     <div class = "content">
       <SignUpForm />
     </div>
@@ -8,12 +11,14 @@
 </template>
 
 <script>
-import Header from "@/components/Header.vue";
-import SignUpForm from "@/components/SignUpForm.vue"
+import BackToHome from "@/components/BackToHome.vue";
+import Logo from "@/components/Logo.vue";
+import SignUpForm from "@/components/SignUpForm.vue";
 export default {
   name: "SignUpView",
   components: {
-    Header,
+    BackToHome,
+    Logo,
     SignUpForm,
   },
 }
@@ -27,7 +32,11 @@ export default {
   height: 100vh;
   width: 100vw;
 }
-
+.left-container {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+}
 .content {
   margin-left: 2rem;
 }

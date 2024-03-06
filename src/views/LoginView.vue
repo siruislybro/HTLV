@@ -1,19 +1,24 @@
 <template>
   <div class = "login-view">
-    <Header />
-    <div class = "content">
+    <div class = "left-container">
+      <BackToHome />
+      <Logo />
+    </div>
+    <div class = "form">
       <LoginForm />
     </div>
   </div>
 </template>
 
 <script>
-import Header from "@/components/Header.vue";
+import BackToHome from "@/components/BackToHome.vue"
+import Logo from "@/components/Logo.vue";
 import LoginForm from "@/components/LoginForm.vue"
 export default {
   name: "LoginView",
   components: {
-    Header,
+    BackToHome,
+    Logo,
     LoginForm,
   },
 }
@@ -27,8 +32,12 @@ export default {
   height: 100vh;
   width: 100vw;
 }
-
-.content {
+.left-container {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+}
+.form {
   margin-left: 2rem;
 }
 </style>
