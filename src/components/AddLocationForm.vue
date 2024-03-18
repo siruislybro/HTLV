@@ -1,23 +1,12 @@
 <template>
   <button class="close-button" @click="closeForm()">X</button>
-  <form @submit.prevent="addLocation">
+  <form @submit.prevent="saveLocation">
     <label for="location">Location</label>
-    <input
-      class="location"
-      v-model="location"
-      type="text"
-      placeholder="Enter Location Title"
-      required
-    />
+    <input class="location" v-model="formData.location" type="text" placeholder="Enter Location Title" required />
     <label for="description">Description</label>
-    <textarea
-      class="description"
-      v-model="description"
-      placeholder="Enter Description"
-      required
-    ></textarea>
+    <textarea class="description" v-model="formData.description" placeholder="Enter Description" required></textarea>
     <label for="category">Category</label>
-    <select name="category" class="category" required>
+    <select name="category" class="category" v-model="formData.category" required>
       <option value="" disabled selected>Select Category</option>
       <option value="food">Food</option>
       <option value="bar">Bar</option>
@@ -32,14 +21,70 @@
   </form>
 </template>
 
+
 <script>
+import { firebaseApp, auth } from '../firebaseConfig';
+import { getFirestore } from "firebase/firestore";
+import { getAuth, onAuthStateChanged } from 'firebase/auth';
+const db = getFirestore(firebaseApp);
+
 export default {
   name: "AddLocationForm",
+
+  data() {
+    return {
+      // Defining data properties for form inputs
+      formData: {
+        location: '',
+        description: '',
+        category: '',
+      }
+    };
+  },
+
+  created() {
+    onAuthStateChanged(auth, (user) => {
+      if (user) {
+        this.userId = user.uid;
+      } else {
+        // Handle the case when the user is signed out if needed
+        this.userId = null;
+      }
+    });
+  },
+
   methods: {
     closeForm() {
       this.$emit("closeForm");
     },
-  },
+
+    async saveLocation() {
+      if (!this.userId) {
+        alert('You must be logged in to save a location.');
+        return;
+      }
+      if (!this.itineraryId) {
+        alert('You must select an itinerary to add a location to.');
+        return;
+      }
+      if (!this.dayId) {
+        alert('You must select a day to add your location to.');
+        return;
+      }
+
+      try {
+        const locationRef = collection(db, "users", this.userId, "itineraries", this.itineraryId, "days", this.dayId, "locations");
+        await addDoc(locationRef, {
+          ...this.formData
+        });
+        alert('Location added successfully to the day!');
+        // Reset form data
+        this.formData = { location: '', description: '', category: '' };
+      } catch (error) {
+        console.error('Error adding location: ', error);
+      }
+    }
+  }
 };
 </script>
 
