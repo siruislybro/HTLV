@@ -53,7 +53,9 @@
     display: relative;
     width: 80px;
     overflow: hidden;
-    padding: 15px;
+    padding-right: 15px;
+    padding-left: 15px;
+
 }
 .main_logo {
     cursor: pointer;
@@ -67,17 +69,19 @@
 
 .nav_links{
     font-size: 28px;
-    display: flex;
     font-weight: 500;
+    display: flex;
+    width: 900px;
+    justify-content: space-between;
 }
 
 .tab {
     cursor: pointer;
     text-decoration: none;
     color: #FF5A5F;
-    padding: 60px 20px;
-    width: 200px;
+    padding: 90px 20px;
     text-align: center;
+    width: 25%;
 }
 
 .tab:hover {
@@ -87,14 +91,19 @@
 
 #search_bar_container {
     position: relative;
-    display: block;
-    padding: 10px 8px;
-    ;
+    display: flex;
+    flex-grow: 1;
+}
+
+#search_bar_form {
+    position: relative;
+    display: flex;
+    flex-grow: 1;
+    padding-left: 10px;
 }
 
 #search_bar_input {
-    margin-left: 30px;
-    width: 175px;
+    flex-grow: 1;
     font-style: italic;
     border: 1px solid;
     border-radius: 25px;
@@ -102,6 +111,7 @@
     background-color: rgb(232, 225, 225);
     color: #7f7272;
     font-size: large;
+    width:auto;
 }
 
 #search_bar_input:hover {
@@ -127,8 +137,10 @@
 
 #profile_rect {
     padding-left: 30px;
+    padding-right: 30px;
     display: flex;
     align-items: center;
+    margin-left: auto;
 }
 
 .profile_logo {
@@ -141,5 +153,9 @@
 .profile_logo:hover {
     border: 2px solid #FF5A5F; /* Change border color */
     box-shadow: 0 0 5px rgba(0, 0, 0, 0.3); /* Add shadow effect */
+}
+
+#itineraries_tab {
+    color: #347d36;
 }
 </style>
